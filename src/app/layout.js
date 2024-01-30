@@ -1,4 +1,6 @@
 import "./globals.css";
+
+import { ThemeProvider } from "@/components/theme-provider"
 import Header from "@/components/header";
 
 export const metadata = {
@@ -8,11 +10,13 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark:bg-black" suppressHydrationWarning>
       <body>
-        <Header />
-        {children}
+        <ThemeProvider defaultTheme="dark" attribute="class">
+          <Header />
+          {children}
+        </ThemeProvider>
       </body>
-    </html>
+    </html >
   );
 }
