@@ -1,5 +1,7 @@
 import "./globals.css";
 
+import { Toaster } from "@/components/shadcn/ui/toaster"
+
 import { ThemeProvider } from "@/components/theme-provider"
 import Header from "@/components/header";
 
@@ -15,6 +17,7 @@ export default function RootLayout({ children }) {
         <ThemeProvider defaultTheme="dark" attribute="class">
           <Header />
           {children}
+          <Toaster />
         </ThemeProvider>
       </body>
     </html >
