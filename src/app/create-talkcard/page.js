@@ -4,11 +4,16 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { postTalkCard } from "@/actions/postTalkCard";
 
+import { useRouter } from 'next/navigation';
+
 import { Input } from "@/components/shadcn/ui/input";
 import { Textarea } from "@/components/shadcn/ui/textarea";
 import { Button } from "@/components/shadcn/ui/button";
+import { useToast } from "@/components/shadcn/ui/use-toast"
 
 export default function CreateTalkCard() {
+    const { toast } = useToast()
+    const router = useRouter()
 
     const maxTitleLength = 100
     const maxDescriptionLength = 300
@@ -25,8 +30,21 @@ export default function CreateTalkCard() {
 
         // console.log(JSON.stringify(xtalkcard))
 
-        const response = await postTalkCard(xtalkcard)
-        console.log(response.message)
+        try {
+            const response = await postTalkCard(xtalkcard)
+            console.log(response.message)
+            toast({
+                title: "TalkCard Posted Succesfully",
+            })
+        }
+        catch (error) {
+            toast({
+                title: "TalkCard Post Failure. Please try again later.",
+            })
+        }
+
+
+        router.push('/');
     }
 
     return (
