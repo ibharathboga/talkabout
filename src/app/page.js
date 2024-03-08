@@ -9,6 +9,9 @@ import AddCardButton from "./components/addcard-button";
 import TalkCardDesign from "./components/talkcard-design";
 import { Button } from "./components/shadcn/ui/button";
 import TalkCardSkeleton from "./components/talkcard-skeleton";
+import { deleteTalkCard } from "./actions/deleteTalkCard";
+
+import { useToast } from "@/components/shadcn/ui/use-toast"
 
 export default function Home() {
     const empty_talkcard = {
@@ -18,6 +21,8 @@ export default function Home() {
     const [pageValue, setPageValue] = useState(0)
     const [talkcard, setTalkcard] = useState(empty_talkcard)
     const [isLoading, setIsLoading] = useState()
+
+    const { toast } = useToast()
 
     const getNextTalkCard = async () => {
 
@@ -45,6 +50,21 @@ export default function Home() {
 
         }
 
+    }
+
+    const handleReport = async (id) => {
+        try {
+            await deleteTalkCard(id)
+            await getNextTalkCard()
+            toast({
+                title: "TalkCard Deletion Success",
+            })
+        }
+        catch (error) {
+            toast({
+                title: "TalkCard Report Failure. Please try again later",
+            })
+        }
     }
 
     useEffect(() => { getNextTalkCard() }, [])
@@ -81,11 +101,20 @@ export default function Home() {
 
 
                 </div>
-                <Button
-                    onClick={getNextTalkCard}
-                >
-                    Next
-                </Button>
+                <div className="flex">
+                    <Button
+                        className="grow mr-2"
+                        onClick={getNextTalkCard}
+                    >
+                        Next
+                    </Button>
+                    <Button
+                        onClick={() => handleReport(talkcard.id)}
+                    >
+                        Report
+                    </Button>
+
+                </div>
             </div>
         </>
     );
